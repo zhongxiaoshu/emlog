@@ -108,41 +108,28 @@
     }
 
     // ============================================
-    // 页面加载动画
+    // 页面加载动画（CSS已自动处理，JS仅作为辅助清理）
     // ============================================
 
     function initPageLoader() {
         const loader = getElement('#page-loader');
         if (!loader) return;
 
-        // 隐藏加载器的函数
-        const hideLoader = () => {
-            if (loader && !loader.classList.contains('hidden')) {
-                loader.classList.add('hidden');
-                // 移除DOM以释放资源
-                setTimeout(() => {
-                    if (loader && loader.parentNode) {
-                        loader.remove();
-                    }
-                }, 300);
-            }
+        // 简单的清理函数 - 在CSS动画完成后移除DOM
+        const removeLoader = () => {
+            setTimeout(() => {
+                if (loader && loader.parentNode) {
+                    loader.remove();
+                }
+            }, 2000); // CSS在1.5s隐藏，2s后移除DOM
         };
 
-        // 多重保险机制确保加载动画会被隐藏
-
-        // 1. DOMContentLoaded后立即隐藏（最快）
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', hideLoader);
+        // 页面加载后清理
+        if (document.readyState === 'complete') {
+            removeLoader();
         } else {
-            // DOM已经准备好，立即隐藏
-            hideLoader();
+            window.addEventListener('load', removeLoader);
         }
-
-        // 2. 页面完全加载后也隐藏（备用）
-        window.addEventListener('load', hideLoader);
-
-        // 3. 最后的保险：2秒后强制隐藏（防止卡住）
-        setTimeout(hideLoader, 2000);
     }
 
     // ============================================

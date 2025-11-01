@@ -233,7 +233,9 @@ a, button, [role="button"], .xr-clickable,
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    transition: opacity var(--transition-base), visibility var(--transition-base);
+    /* 纯CSS自动隐藏：1.5秒后自动消失（不依赖JS） */
+    animation: autoHideLoader 0.3s ease-out 1.5s forwards;
+    pointer-events: none;
 }
 
 .xr-page-loader.hidden {
@@ -253,6 +255,14 @@ a, button, [role="button"], .xr-clickable,
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+/* 自动隐藏加载器动画 */
+@keyframes autoHideLoader {
+    to {
+        opacity: 0;
+        visibility: hidden;
     }
 }
 
