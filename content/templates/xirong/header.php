@@ -59,13 +59,16 @@ if (!function_exists('_g')) {
                 <div class="xr-logo">
                     <a href="<?php echo BLOG_URL; ?>" class="xr-logo-link">
                         <?php
-                        $logoType = _g('logo_type') ?: 'text';
-                        if ($logoType === 'text') {
-                            echo '<span class="xr-logo-text">7XR.CN</span>';
-                        } else {
-                            $logoImg = _g('logo_image') ?: TEMPLATE_URL . 'images/logo.png';
-                            echo '<img src="' . htmlspecialchars($logoImg, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($blogname, ENT_QUOTES, 'UTF-8') . '" class="xr-logo-img">';
-                        }
+                        // ===== LOGO切换方案 =====
+                        // 方案1：纯文字LOGO（默认）- 取消下面第一行注释即启用
+                        // 方案2：图片LOGO - 取消下面第二行注释即启用
+
+                        // 方案1：纯文字LOGO（当前激活）
+                        echo '<span class="xr-logo-text">7XR.CN</span>';
+
+                        // 方案2：图片LOGO（取消下面注释以使用图片，同时注释掉上面的方案1）
+                        // $logoImg = _g('logo_image') ?: TEMPLATE_URL . 'images/logo.png';
+                        // echo '<img src="' . htmlspecialchars($logoImg, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($blogname, ENT_QUOTES, 'UTF-8') . '" class="xr-logo-img">';
                         ?>
                     </a>
                 </div>

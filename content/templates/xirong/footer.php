@@ -182,6 +182,24 @@ defined('EMLOG_ROOT') || exit('access denied!');
     <!-- JavaScript -->
     <script src="<?php echo TEMPLATE_URL; ?>js/main.js?v=<?php echo Option::EMLOG_VERSION_TIMESTAMP; ?>"></script>
 
+    <!-- 紧急修复：强制隐藏加载器（最后保险） -->
+    <script>
+    (function() {
+        var loader = document.getElementById('page-loader');
+        if (loader) {
+            // 立即隐藏
+            setTimeout(function() {
+                loader.classList.add('hidden');
+                setTimeout(function() {
+                    if (loader && loader.parentNode) {
+                        loader.remove();
+                    }
+                }, 300);
+            }, 100);
+        }
+    })();
+    </script>
+
     <?php doAction('index_footer'); ?>
 </body>
 </html>

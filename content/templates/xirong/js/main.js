@@ -56,33 +56,55 @@
     function addUniversalListener(element, handler, options = {}) {
         if (!element) return;
 
-        // 移动端使用touchstart，桌面端使用click
+        // 检测是否为触摸设备
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
         if (isTouchDevice) {
-            // 移动端：同时监听touch和click以确保兼容性
+            let touchHandled = false;
+
+            // 触摸开始 - 添加视觉反馈
             element.addEventListener('touchstart', function(e) {
-                // 添加active样式
                 this.classList.add('touching');
+                touchHandled = false;
             }, { passive: true });
 
+            // 触摸结束 - 执行处理函数
             element.addEventListener('touchend', function(e) {
                 this.classList.remove('touching');
-                // 触发处理函数
+
+                // 阻止后续的click事件触发
+                touchHandled = true;
+
+                // 执行处理函数
+                if (options.preventDefault && !this.tagName.match(/^(A|BUTTON)$/)) {
+                    e.preventDefault();
+                }
+                handler.call(this, e);
+
+                // 300ms后重置标志
+                setTimeout(() => { touchHandled = false; }, 300);
+            }, { passive: false });
+
+            // Click事件 - 作为备用，但避免重复触发
+            element.addEventListener('click', function(e) {
+                if (touchHandled) {
+                    e.preventDefault();
+                    return;
+                }
+                if (options.preventDefault) {
+                    e.preventDefault();
+                }
+                handler.call(this, e);
+            });
+        } else {
+            // 桌面端：只使用click事件
+            element.addEventListener('click', function(e) {
                 if (options.preventDefault) {
                     e.preventDefault();
                 }
                 handler.call(this, e);
             });
         }
-
-        // 同时保留click事件以确保兼容性
-        element.addEventListener('click', function(e) {
-            if (options.preventDefault) {
-                e.preventDefault();
-            }
-            handler.call(this, e);
-        });
     }
 
     // ============================================
