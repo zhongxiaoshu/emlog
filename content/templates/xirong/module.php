@@ -193,7 +193,7 @@ function xr_about_section()
     $output .= '<div class="xr-about-content" data-aos="fade-right">';
     $output .= '<h2 class="xr-section-title">' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '</h2>';
     $output .= '<p class="xr-about-text">' . nl2br(htmlspecialchars($content, ENT_QUOTES, 'UTF-8')) . '</p>';
-    $output .= '<a href="' . htmlspecialchars($btnLink, ENT_QUOTES, 'UTF-8') . '" class="xr-btn xr-btn-primary">' . htmlspecialchars($btnText, ENT_QUOTES, 'UTF-8') . '</a>';
+    $output .= '<a href="' . htmlspecialchars($btnLink, ENT_QUOTES, 'UTF-8') . '" class="xr-btn xr-btn-primary"><span>' . htmlspecialchars($btnText, ENT_QUOTES, 'UTF-8') . '</span></a>';
     $output .= '</div>';
     $output .= '</div></section>';
     echo $output;
@@ -214,7 +214,7 @@ function xr_join_section()
     $output .= '<div class="xr-join-content" data-aos="fade-left">';
     $output .= '<h2 class="xr-section-title">' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '</h2>';
     $output .= '<p class="xr-join-text">' . nl2br(htmlspecialchars($content, ENT_QUOTES, 'UTF-8')) . '</p>';
-    $output .= '<a href="' . htmlspecialchars($btnLink, ENT_QUOTES, 'UTF-8') . '" class="xr-btn xr-btn-secondary">' . htmlspecialchars($btnText, ENT_QUOTES, 'UTF-8') . '</a>';
+    $output .= '<a href="' . htmlspecialchars($btnLink, ENT_QUOTES, 'UTF-8') . '" class="xr-btn xr-btn-secondary"><span>' . htmlspecialchars($btnText, ENT_QUOTES, 'UTF-8') . '</span></a>';
     $output .= '</div>';
     $output .= '</div></section>';
     echo $output;

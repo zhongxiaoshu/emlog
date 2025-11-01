@@ -26,11 +26,11 @@ if (!blog_tool_ishome()) {
             <div class="xr-hero-buttons" data-aos="fade-up" data-aos-delay="200">
                 <a href="<?php echo htmlspecialchars(_g('hero_btn1_link') ?: '#services', ENT_QUOTES, 'UTF-8'); ?>"
                    class="xr-btn xr-btn-primary xr-btn-lg">
-                    <?php echo htmlspecialchars(_g('hero_btn1_text') ?: '了解更多', ENT_QUOTES, 'UTF-8'); ?>
+                    <span><?php echo htmlspecialchars(_g('hero_btn1_text') ?: '了解更多', ENT_QUOTES, 'UTF-8'); ?></span>
                 </a>
                 <a href="<?php echo htmlspecialchars(_g('hero_btn2_link') ?: '#contact', ENT_QUOTES, 'UTF-8'); ?>"
                    class="xr-btn xr-btn-outline xr-btn-lg">
-                    <?php echo htmlspecialchars(_g('hero_btn2_text') ?: '联系我们', ENT_QUOTES, 'UTF-8'); ?>
+                    <span><?php echo htmlspecialchars(_g('hero_btn2_text') ?: '联系我们', ENT_QUOTES, 'UTF-8'); ?></span>
                 </a>
             </div>
         </div>

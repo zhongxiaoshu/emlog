@@ -51,59 +51,35 @@
     }
 
     /**
-     * 添加跨平台事件监听（支持触摸和点击）
+     * 添加跨平台事件监听 - 简化版，让浏览器处理touch转click
      */
     function addUniversalListener(element, handler, options = {}) {
         if (!element) return;
 
-        // 检测是否为触摸设备
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        // 统一使用click事件（浏览器会自动将touch转为click）
+        element.addEventListener('click', function(e) {
+            if (options.preventDefault) {
+                e.preventDefault();
+            }
+            handler.call(this, e);
+        }, false);
 
-        if (isTouchDevice) {
-            let touchHandled = false;
-
-            // 触摸开始 - 添加视觉反馈
-            element.addEventListener('touchstart', function(e) {
+        // 添加触摸视觉反馈（仅用于UI效果）
+        if ('ontouchstart' in window) {
+            element.addEventListener('touchstart', function() {
                 this.classList.add('touching');
-                touchHandled = false;
             }, { passive: true });
 
-            // 触摸结束 - 执行处理函数
-            element.addEventListener('touchend', function(e) {
+            element.addEventListener('touchend', function() {
+                const self = this;
+                setTimeout(() => {
+                    self.classList.remove('touching');
+                }, 150);
+            }, { passive: true });
+
+            element.addEventListener('touchcancel', function() {
                 this.classList.remove('touching');
-
-                // 阻止后续的click事件触发
-                touchHandled = true;
-
-                // 执行处理函数
-                if (options.preventDefault && !this.tagName.match(/^(A|BUTTON)$/)) {
-                    e.preventDefault();
-                }
-                handler.call(this, e);
-
-                // 300ms后重置标志
-                setTimeout(() => { touchHandled = false; }, 300);
-            }, { passive: false });
-
-            // Click事件 - 作为备用，但避免重复触发
-            element.addEventListener('click', function(e) {
-                if (touchHandled) {
-                    e.preventDefault();
-                    return;
-                }
-                if (options.preventDefault) {
-                    e.preventDefault();
-                }
-                handler.call(this, e);
-            });
-        } else {
-            // 桌面端：只使用click事件
-            element.addEventListener('click', function(e) {
-                if (options.preventDefault) {
-                    e.preventDefault();
-                }
-                handler.call(this, e);
-            });
+            }, { passive: true });
         }
     }
 
