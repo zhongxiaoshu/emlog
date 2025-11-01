@@ -1514,7 +1514,7 @@ a, button, [role="button"], .xr-clickable,
         height: 64px;
     }
 
-    /* 修复移动端导航显示 */
+    /* 移动端导航 - 简化版本，强制可见 */
     .xr-nav {
         position: fixed;
         top: 64px;
@@ -1525,17 +1525,15 @@ a, button, [role="button"], .xr-clickable,
         background-color: var(--color-background);
         border-bottom: 1px solid var(--color-border);
         box-shadow: 0 4px 12px var(--color-shadow);
+        z-index: var(--z-dropdown);
+        /* 默认隐藏：只用transform */
         transform: translateY(-100%);
         transition: transform var(--transition-base);
-        z-index: var(--z-dropdown);
-        opacity: 0;
-        visibility: hidden;
     }
 
     .xr-nav.active {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
+        /* 显示：只改transform */
+        transform: translateY(0) !important;
     }
 
     .xr-nav-list {

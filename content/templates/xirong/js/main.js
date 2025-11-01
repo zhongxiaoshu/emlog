@@ -226,35 +226,43 @@
         },
 
         toggleMobileMenu() {
-            console.log('toggleMobileMenu called'); // 调试
+            // 每次都重新获取元素，确保最新
+            const nav = getElement('#main-nav');
+            const overlay = getElement('#mobile-menu-overlay');
 
-            if (!this.nav) {
-                console.error('Nav element not found! Selector: #main-nav');
-                // 尝试重新查找
-                this.nav = getElement('#main-nav');
-                if (!this.nav) {
-                    console.error('Still not found after retry');
-                    return;
-                }
+            console.log('Toggle clicked!', { nav: !!nav, overlay: !!overlay });
+
+            if (!nav) {
+                console.error('❌ Nav #main-nav not found in DOM!');
+                alert('菜单元素未找到，请检查主题文件'); // 用户可见的提示
+                return;
             }
 
-            if (!this.mobileMenuOverlay) {
-                console.error('Overlay element not found! Selector: #mobile-menu-overlay');
-                this.mobileMenuOverlay = getElement('#mobile-menu-overlay');
-                if (!this.mobileMenuOverlay) {
-                    console.error('Overlay still not found after retry');
-                    return;
-                }
+            if (!overlay) {
+                console.error('❌ Overlay #mobile-menu-overlay not found!');
             }
 
-            const isActive = this.nav.classList.toggle('active');
-            this.mobileMenuOverlay.classList.toggle('active', isActive);
+            // 切换active类
+            const isActive = nav.classList.toggle('active');
+            console.log('✅ Menu toggled:', isActive ? 'OPEN' : 'CLOSED');
+
+            // 更新overlay
+            if (overlay) {
+                overlay.classList.toggle('active', isActive);
+            }
+
+            // 阻止body滚动
             document.body.style.overflow = isActive ? 'hidden' : '';
 
-            console.log('Menu toggled. Active:', isActive);
-            console.log('Nav classes:', this.nav.className);
-            console.log('Nav display:', window.getComputedStyle(this.nav).display);
-            console.log('Nav transform:', window.getComputedStyle(this.nav).transform);
+            // 强制检查样式
+            const styles = window.getComputedStyle(nav);
+            console.log('Nav styles:', {
+                display: styles.display,
+                transform: styles.transform,
+                position: styles.position,
+                top: styles.top,
+                zIndex: styles.zIndex
+            });
         },
 
         closeMobileMenu() {
