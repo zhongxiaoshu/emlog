@@ -46,23 +46,12 @@ if (!function_exists('_g')) {
     <!-- SVG图标库 -->
     <?php xr_svg_icons(); ?>
 
-    <!-- 页面加载动画 -->
+    <!-- 页面加载动画 - 临时禁用以确保页面能显示 -->
+    <!--
     <div class="xr-page-loader" id="page-loader">
         <div class="xr-loader-spinner"></div>
     </div>
-    <!-- 终极保险：纯CSS强制隐藏，完全不依赖JavaScript -->
-    <style>
-        #page-loader {
-            animation: loaderAutoHide 0.3s ease-out 1.5s forwards !important;
-        }
-        @keyframes loaderAutoHide {
-            to {
-                opacity: 0 !important;
-                visibility: hidden !important;
-                pointer-events: none !important;
-            }
-        }
-    </style>
+    -->
 
     <!-- 顶部导航栏 -->
     <header class="xr-header" id="main-header">
