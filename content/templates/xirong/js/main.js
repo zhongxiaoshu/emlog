@@ -123,10 +123,16 @@
             this.themeOptions.forEach(option => {
                 const optionTheme = option.dataset.theme;
                 if (optionTheme === theme) {
-                    option.style.backgroundColor = 'var(--color-surface-hover)';
+                    option.classList.add('active');
                 } else {
-                    option.style.backgroundColor = '';
+                    option.classList.remove('active');
                 }
+            });
+
+            // 更新按钮标签显示
+            const labels = getElements('[data-theme-label]');
+            labels.forEach(label => {
+                label.style.display = label.dataset.themeLabel === theme ? 'inline' : 'none';
             });
         },
 

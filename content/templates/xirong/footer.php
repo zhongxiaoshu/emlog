@@ -21,6 +21,12 @@ defined('EMLOG_ROOT') || exit('access denied!');
                         $logoImg = _g('logo_image') ?: TEMPLATE_URL . 'images/logo.png';
                         echo '<img src="' . htmlspecialchars($logoImg, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($blogname, ENT_QUOTES, 'UTF-8') . '" class="xr-footer-logo-img">';
                     }
+
+                    // Logo描述文本
+                    $footerDesc = _g('footer_description');
+                    if (!empty($footerDesc)) {
+                        echo '<div class="xr-footer-description">' . htmlspecialchars($footerDesc, ENT_QUOTES, 'UTF-8') . '</div>';
+                    }
                     ?>
                 </div>
 
@@ -37,51 +43,76 @@ defined('EMLOG_ROOT') || exit('access denied!');
 
             <!-- 下半部分：版权信息和法律链接 -->
             <div class="xr-footer-bottom">
-                <div class="xr-footer-copyright">
+                <!-- 左侧区域 -->
+                <div class="xr-footer-left">
+                    <div class="xr-footer-copyright">
+                        <?php
+                        $copyright = _g('copyright_text') ?: '© 2025 7XR.CN 息壤信息咨询服务. All rights reserved.';
+                        echo htmlspecialchars($copyright, ENT_QUOTES, 'UTF-8');
+                        ?>
+                    </div>
                     <?php
-                    $copyright = _g('copyright_text') ?: '© 2025 7XR.CN 息壤信息咨询服务. All rights reserved.';
-                    echo htmlspecialchars($copyright, ENT_QUOTES, 'UTF-8');
+                    // 额外信息区域（ICP备案等）
+                    $footerExtra = _g('footer_extra_info');
+                    if (!empty($footerExtra) || !empty($icp)) {
+                        echo '<div class="xr-footer-extra">';
+                        if (!empty($icp)) {
+                            echo htmlspecialchars($icp, ENT_QUOTES, 'UTF-8');
+                        }
+                        if (!empty($footerExtra) && !empty($icp)) {
+                            echo ' | ';
+                        }
+                        if (!empty($footerExtra)) {
+                            echo htmlspecialchars($footerExtra, ENT_QUOTES, 'UTF-8');
+                        }
+                        echo '</div>';
+                    }
                     ?>
-                    <?php if (!empty($icp)): ?>
-                        <span class="xr-footer-icp"> | <?php echo $icp; ?></span>
-                    <?php endif; ?>
                 </div>
 
-                <div class="xr-footer-legal">
-                    <a href="#" class="xr-footer-legal-link" data-modal="help-doc">
-                        <svg class="xr-icon"><use xlink:href="#icon-document"></use></svg>
-                        <span>帮助文档</span>
-                    </a>
-                    <a href="#" class="xr-footer-legal-link" data-modal="terms">
-                        <svg class="xr-icon"><use xlink:href="#icon-document"></use></svg>
-                        <span>服务条款</span>
-                    </a>
-                    <a href="#" class="xr-footer-legal-link" data-modal="privacy">
-                        <svg class="xr-icon"><use xlink:href="#icon-shield"></use></svg>
-                        <span>隐私政策</span>
-                    </a>
-                </div>
+                <!-- 右侧区域 -->
+                <div class="xr-footer-right">
+                    <div class="xr-footer-legal">
+                        <a href="#" class="xr-footer-legal-link" data-modal="help-doc">
+                            <svg class="xr-icon"><use xlink:href="#icon-document"></use></svg>
+                            <span>帮助文档</span>
+                        </a>
+                        <a href="#" class="xr-footer-legal-link" data-modal="terms">
+                            <svg class="xr-icon"><use xlink:href="#icon-document"></use></svg>
+                            <span>服务条款</span>
+                        </a>
+                        <a href="#" class="xr-footer-legal-link" data-modal="privacy">
+                            <svg class="xr-icon"><use xlink:href="#icon-shield"></use></svg>
+                            <span>隐私政策</span>
+                        </a>
+                    </div>
 
-                <!-- 主题切换器 -->
-                <div class="xr-theme-switcher">
-                    <button class="xr-theme-btn" id="theme-btn" aria-label="主题切换">
-                        <svg class="xr-icon xr-theme-icon-sun"><use xlink:href="#icon-sun"></use></svg>
-                        <svg class="xr-icon xr-theme-icon-moon"><use xlink:href="#icon-moon"></use></svg>
-                        <svg class="xr-icon xr-theme-icon-auto"><use xlink:href="#icon-auto"></use></svg>
-                    </button>
-                    <div class="xr-theme-menu" id="theme-menu">
-                        <button class="xr-theme-option" data-theme="light">
-                            <svg class="xr-icon"><use xlink:href="#icon-sun"></use></svg>
-                            <span>浅色</span>
+                    <!-- 主题切换器 -->
+                    <div class="xr-theme-switcher">
+                        <button class="xr-theme-btn" id="theme-btn" aria-label="主题切换">
+                            <svg class="xr-icon xr-theme-icon-sun"><use xlink:href="#icon-sun"></use></svg>
+                            <svg class="xr-icon xr-theme-icon-moon"><use xlink:href="#icon-moon"></use></svg>
+                            <svg class="xr-icon xr-theme-icon-auto"><use xlink:href="#icon-auto"></use></svg>
+                            <span class="xr-theme-label">
+                                <span data-theme-label="light">浅色</span>
+                                <span data-theme-label="dark">深色</span>
+                                <span data-theme-label="auto">自动</span>
+                            </span>
                         </button>
-                        <button class="xr-theme-option" data-theme="dark">
-                            <svg class="xr-icon"><use xlink:href="#icon-moon"></use></svg>
-                            <span>深色</span>
-                        </button>
-                        <button class="xr-theme-option" data-theme="auto">
-                            <svg class="xr-icon"><use xlink:href="#icon-auto"></use></svg>
-                            <span>自动</span>
-                        </button>
+                        <div class="xr-theme-menu" id="theme-menu">
+                            <button class="xr-theme-option" data-theme="light">
+                                <svg class="xr-icon"><use xlink:href="#icon-sun"></use></svg>
+                                <span>浅色</span>
+                            </button>
+                            <button class="xr-theme-option" data-theme="dark">
+                                <svg class="xr-icon"><use xlink:href="#icon-moon"></use></svg>
+                                <span>深色</span>
+                            </button>
+                            <button class="xr-theme-option" data-theme="auto">
+                                <svg class="xr-icon"><use xlink:href="#icon-auto"></use></svg>
+                                <span>自动</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

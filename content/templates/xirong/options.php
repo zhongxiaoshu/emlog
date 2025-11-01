@@ -208,6 +208,15 @@ $options = [
         'description' => 'Footer区域的LOGO显示方式'
     ],
 
+    'footer_description' => [
+        'labels' => 'tpl-footer',
+        'type' => 'text',
+        'multi' => true,
+        'name' => 'Footer描述文本',
+        'default' => '专注于为企业提供高品质的信息咨询服务，助力您的数字化转型之路。',
+        'description' => 'Logo下方的描述文字，可填写网站服务介绍等'
+    ],
+
     'footer_column1_title' => [
         'labels' => 'tpl-footer',
         'type' => 'text',
@@ -309,5 +318,13 @@ $options = [
         'name' => '隐私政策内容',
         'default' => '这里是隐私政策的内容。您可以在这里添加详细的隐私保护政策。',
         'description' => '隐私政策弹窗的内容（支持HTML）'
+    ],
+
+    'footer_extra_info' => [
+        'labels' => 'tpl-footer',
+        'type' => 'text',
+        'name' => 'Footer额外信息',
+        'default' => '',
+        'description' => '版权信息下方的额外文本区域，可填写其他信息（会自动与ICP备案号组合显示）'
     ],
 ];
