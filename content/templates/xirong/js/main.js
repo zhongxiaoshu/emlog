@@ -58,13 +58,35 @@
         const loader = getElement('#page-loader');
         if (!loader) return;
 
-        window.addEventListener('load', () => {
-            setTimeout(() => {
+        // 隐藏加载器的函数
+        const hideLoader = () => {
+            if (loader && !loader.classList.contains('hidden')) {
                 loader.classList.add('hidden');
                 // 移除DOM以释放资源
-                setTimeout(() => loader.remove(), 300);
-            }, 500);
+                setTimeout(() => {
+                    if (loader && loader.parentNode) {
+                        loader.remove();
+                    }
+                }, 300);
+            }
+        };
+
+        // 多重保险机制确保加载动画会被隐藏
+
+        // 1. 页面完全加载后隐藏（推荐方式）
+        window.addEventListener('load', () => {
+            setTimeout(hideLoader, 300);
         });
+
+        // 2. DOM准备好后也尝试隐藏（更快）
+        if (document.readyState === 'complete') {
+            setTimeout(hideLoader, 300);
+        }
+
+        // 3. 最后的保险：3秒后强制隐藏（防止卡住）
+        setTimeout(() => {
+            hideLoader();
+        }, 3000);
     }
 
     // ============================================

@@ -40,9 +40,6 @@ if (!function_exists('_g')) {
     <!-- 样式表 -->
     <link rel="stylesheet" href="<?php echo TEMPLATE_URL; ?>css/style.css?v=<?php echo Option::EMLOG_VERSION_TIMESTAMP; ?>">
 
-    <!-- 预加载关键资源 -->
-    <link rel="preload" href="<?php echo TEMPLATE_URL; ?>js/main.js" as="script">
-
     <?php doAction('index_head'); ?>
 </head>
 <body class="xr-body">
