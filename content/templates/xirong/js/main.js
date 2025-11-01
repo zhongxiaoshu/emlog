@@ -226,11 +226,19 @@
         },
 
         toggleMobileMenu() {
-            if (!this.nav || !this.mobileMenuOverlay) return;
+            if (!this.nav || !this.mobileMenuOverlay) {
+                console.warn('Mobile menu elements not found:', {
+                    nav: this.nav,
+                    overlay: this.mobileMenuOverlay
+                });
+                return;
+            }
 
             const isActive = this.nav.classList.toggle('active');
             this.mobileMenuOverlay.classList.toggle('active', isActive);
             document.body.style.overflow = isActive ? 'hidden' : '';
+
+            console.log('Menu toggled:', isActive);
         },
 
         closeMobileMenu() {
