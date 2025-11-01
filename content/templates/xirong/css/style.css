@@ -132,6 +132,9 @@ html {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
+    /* 移动端触摸优化 */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 body {
@@ -140,6 +143,48 @@ body {
     color: var(--color-text-primary);
     background-color: var(--color-background);
     transition: background-color var(--transition-base), color var(--transition-base);
+    /* 防止iOS Safari橡皮筋效果影响固定元素 */
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* 移动端触摸反馈 */
+a, button, [role="button"], .xr-clickable {
+    -webkit-tap-highlight-color: rgba(0, 102, 255, 0.1);
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* 确保所有可点击元素有cursor pointer */
+a, button, [role="button"], .xr-clickable,
+.xr-nav-link, .xr-btn, .xr-faq-question,
+.xr-footer-legal-link, .xr-theme-btn,
+.xr-theme-option, .xr-back-to-top,
+.xr-modal-close, .xr-mobile-menu-btn {
+    cursor: pointer;
+}
+
+/* 移动端触摸反馈样式 */
+.touching {
+    opacity: 0.7 !important;
+    transform: scale(0.98) !important;
+    transition: opacity 0.1s ease, transform 0.1s ease !important;
+}
+
+/* 特定元素的触摸反馈优化 */
+.xr-btn.touching {
+    opacity: 0.85 !important;
+}
+
+.xr-nav-link.touching,
+.xr-faq-question.touching,
+.xr-footer-column-title.touching {
+    background-color: var(--color-hover) !important;
+}
+
+.xr-theme-option.touching {
+    background-color: rgba(0, 102, 255, 0.15) !important;
 }
 
 /* 选中文本样式 */

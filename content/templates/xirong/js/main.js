@@ -50,6 +50,41 @@
         return document.querySelectorAll(selector);
     }
 
+    /**
+     * 添加跨平台事件监听（支持触摸和点击）
+     */
+    function addUniversalListener(element, handler, options = {}) {
+        if (!element) return;
+
+        // 移动端使用touchstart，桌面端使用click
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        if (isTouchDevice) {
+            // 移动端：同时监听touch和click以确保兼容性
+            element.addEventListener('touchstart', function(e) {
+                // 添加active样式
+                this.classList.add('touching');
+            }, { passive: true });
+
+            element.addEventListener('touchend', function(e) {
+                this.classList.remove('touching');
+                // 触发处理函数
+                if (options.preventDefault) {
+                    e.preventDefault();
+                }
+                handler.call(this, e);
+            });
+        }
+
+        // 同时保留click事件以确保兼容性
+        element.addEventListener('click', function(e) {
+            if (options.preventDefault) {
+                e.preventDefault();
+            }
+            handler.call(this, e);
+        });
+    }
+
     // ============================================
     // 页面加载动画
     // ============================================
@@ -152,10 +187,10 @@
         },
 
         bindEvents() {
-            this.themeBtn.addEventListener('click', () => this.toggleMenu());
+            addUniversalListener(this.themeBtn, () => this.toggleMenu());
 
             this.themeOptions.forEach(option => {
-                option.addEventListener('click', () => {
+                addUniversalListener(option, () => {
                     const theme = option.dataset.theme;
                     this.setTheme(theme);
                     this.themeMenu.classList.remove('active');
@@ -228,16 +263,16 @@
 
             // 移动端菜单
             if (this.mobileMenuBtn) {
-                this.mobileMenuBtn.addEventListener('click', () => this.toggleMobileMenu());
+                addUniversalListener(this.mobileMenuBtn, () => this.toggleMobileMenu());
             }
 
             if (this.mobileMenuOverlay) {
-                this.mobileMenuOverlay.addEventListener('click', () => this.closeMobileMenu());
+                addUniversalListener(this.mobileMenuOverlay, () => this.closeMobileMenu());
             }
 
             // 点击导航链接后关闭移动菜单
             this.navLinks.forEach(link => {
-                link.addEventListener('click', () => {
+                addUniversalListener(link, () => {
                     this.closeMobileMenu();
                 });
             });
@@ -252,7 +287,7 @@
         const links = getElements('a[href^="#"]');
 
         links.forEach(link => {
-            link.addEventListener('click', function (e) {
+            addUniversalListener(link, function (e) {
                 const href = this.getAttribute('href');
 
                 // 忽略只有#的链接
@@ -274,7 +309,7 @@
                         behavior: 'smooth'
                     });
                 }
-            });
+            }, { preventDefault: false }); // Don't auto-prevent since we handle it conditionally
         });
     }
 
@@ -309,7 +344,7 @@
 
         bindEvents() {
             window.addEventListener('scroll', throttle(() => this.handleScroll(), 100));
-            this.btn.addEventListener('click', () => this.scrollToTop());
+            addUniversalListener(this.btn, () => this.scrollToTop());
         }
     };
 
@@ -324,7 +359,7 @@
             const question = item.querySelector('.xr-faq-question');
 
             if (question) {
-                question.addEventListener('click', () => {
+                addUniversalListener(question, () => {
                     const isActive = item.classList.contains('active');
 
                     // 关闭所有其他FAQ
@@ -354,7 +389,7 @@
             const title = column.querySelector('.xr-footer-column-title');
 
             if (title) {
-                title.addEventListener('click', () => {
+                addUniversalListener(title, () => {
                     const isActive = column.classList.contains('active');
 
                     // 关闭所有其他列
@@ -421,11 +456,11 @@
         bindEvents() {
             // 打开按钮
             this.triggers.forEach(trigger => {
-                trigger.addEventListener('click', (e) => {
+                addUniversalListener(trigger, (e) => {
                     e.preventDefault();
                     const modalId = trigger.dataset.modal;
                     this.open(modalId);
-                });
+                }, { preventDefault: true });
             });
 
             // 关闭按钮和覆盖层
@@ -434,11 +469,11 @@
                 const overlay = modal.querySelector('.xr-modal-overlay');
 
                 if (closeBtn) {
-                    closeBtn.addEventListener('click', () => this.close(modal));
+                    addUniversalListener(closeBtn, () => this.close(modal));
                 }
 
                 if (overlay) {
-                    overlay.addEventListener('click', () => this.close(modal));
+                    addUniversalListener(overlay, () => this.close(modal));
                 }
             });
         }
