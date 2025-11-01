@@ -130,20 +130,19 @@
 
         // 多重保险机制确保加载动画会被隐藏
 
-        // 1. 页面完全加载后隐藏（推荐方式）
-        window.addEventListener('load', () => {
-            setTimeout(hideLoader, 300);
-        });
-
-        // 2. DOM准备好后也尝试隐藏（更快）
-        if (document.readyState === 'complete') {
-            setTimeout(hideLoader, 300);
+        // 1. DOMContentLoaded后立即隐藏（最快）
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', hideLoader);
+        } else {
+            // DOM已经准备好，立即隐藏
+            hideLoader();
         }
 
-        // 3. 最后的保险：3秒后强制隐藏（防止卡住）
-        setTimeout(() => {
-            hideLoader();
-        }, 3000);
+        // 2. 页面完全加载后也隐藏（备用）
+        window.addEventListener('load', hideLoader);
+
+        // 3. 最后的保险：2秒后强制隐藏（防止卡住）
+        setTimeout(hideLoader, 2000);
     }
 
     // ============================================
@@ -580,9 +579,6 @@
     // ============================================
 
     function init() {
-        // 页面加载动画
-        initPageLoader();
-
         // 主题切换
         ThemeSwitcher.init();
 
@@ -622,7 +618,10 @@
     // 启动应用
     // ============================================
 
-    // DOM加载完成后初始化
+    // 立即初始化页面加载器（不等待DOM）
+    initPageLoader();
+
+    // DOM加载完成后初始化其他组件
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
