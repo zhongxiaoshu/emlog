@@ -334,6 +334,10 @@ a, button, [role="button"], .xr-clickable,
 }
 
 /* 导航菜单 */
+.xr-nav {
+    display: block;
+}
+
 .xr-nav-list {
     display: flex;
     gap: var(--spacing-lg);
@@ -1641,23 +1645,24 @@ a, button, [role="button"], .xr-clickable,
     /* 移动端手风琴式Footer */
     .xr-footer-column {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: var(--spacing-md) 0;
+        padding: var(--spacing-xs) 0; /* 减少高度：从md改为xs */
     }
 
     .xr-footer-column-title {
         cursor: pointer;
         position: relative;
-        padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-sm) 0;
+        padding: var(--spacing-xs) var(--spacing-md) var(--spacing-xs) 0; /* 减少padding */
         user-select: none;
         margin-bottom: 0;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        min-height: 40px; /* 确保最小可点击区域 */
     }
 
     .xr-footer-column-title::after {
         content: '+';
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-lg); /* 减小图标大小：从xl改为lg */
         line-height: 1;
         transition: transform var(--transition-base);
         flex-shrink: 0;

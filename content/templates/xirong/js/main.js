@@ -226,19 +226,35 @@
         },
 
         toggleMobileMenu() {
-            if (!this.nav || !this.mobileMenuOverlay) {
-                console.warn('Mobile menu elements not found:', {
-                    nav: this.nav,
-                    overlay: this.mobileMenuOverlay
-                });
-                return;
+            console.log('toggleMobileMenu called'); // 调试
+
+            if (!this.nav) {
+                console.error('Nav element not found! Selector: #main-nav');
+                // 尝试重新查找
+                this.nav = getElement('#main-nav');
+                if (!this.nav) {
+                    console.error('Still not found after retry');
+                    return;
+                }
+            }
+
+            if (!this.mobileMenuOverlay) {
+                console.error('Overlay element not found! Selector: #mobile-menu-overlay');
+                this.mobileMenuOverlay = getElement('#mobile-menu-overlay');
+                if (!this.mobileMenuOverlay) {
+                    console.error('Overlay still not found after retry');
+                    return;
+                }
             }
 
             const isActive = this.nav.classList.toggle('active');
             this.mobileMenuOverlay.classList.toggle('active', isActive);
             document.body.style.overflow = isActive ? 'hidden' : '';
 
-            console.log('Menu toggled:', isActive);
+            console.log('Menu toggled. Active:', isActive);
+            console.log('Nav classes:', this.nav.className);
+            console.log('Nav display:', window.getComputedStyle(this.nav).display);
+            console.log('Nav transform:', window.getComputedStyle(this.nav).transform);
         },
 
         closeMobileMenu() {
