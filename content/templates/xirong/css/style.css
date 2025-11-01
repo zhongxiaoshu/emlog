@@ -560,6 +560,13 @@ a, button, [role="button"], .xr-clickable,
     background: rgba(255, 255, 255, 0.2);
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
+    z-index: 0;
+}
+
+/* 确保按钮文字在伪元素上方 */
+.xr-btn > * {
+    position: relative;
+    z-index: 1;
 }
 
 .xr-btn:hover::before {
