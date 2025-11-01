@@ -6,9 +6,16 @@
 defined('EMLOG_ROOT') || exit('access denied!');
 require_once View::getView('module');
 
-// 检查tpl_options插件
+// 检查tpl_options插件 - 提供兼容函数
 if (!function_exists('_g')) {
-    emMsg('请开启【模板设置】插件以使用息壤主题的全部功能');
+    function _g($key = null, $default = '') {
+        return $default;
+    }
+    function _em($key = null, $default = '') {
+        return $default;
+    }
+    // 在页面顶部显示提示
+    echo '<div style="background:#fff3cd;color:#856404;padding:15px;text-align:center;border-bottom:1px solid #ffc107;">请先开启【模板设置】插件以使用息壤主题的全部功能。<a href="/admin/plugin.php" style="color:#856404;text-decoration:underline;margin-left:10px;">去开启</a></div>';
 }
 ?>
 <!DOCTYPE html>
