@@ -402,10 +402,12 @@ a, button, [role="button"], .xr-clickable,
     z-index: var(--z-dropdown);
     opacity: 0;
     transition: opacity var(--transition-base);
+    pointer-events: none; /* 默认不阻挡点击 */
 }
 
 .xr-mobile-menu-overlay.active {
     opacity: 1;
+    pointer-events: auto; /* 激活时才可点击 */
 }
 
 /* ============================================
