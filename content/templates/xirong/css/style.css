@@ -1518,18 +1518,20 @@ a, button, [role="button"], .xr-clickable,
     .xr-nav {
         display: none; /* 默认完全隐藏 */
         position: fixed;
-        top: 64px;
+        top: 0; /* 从视口顶部开始，避免滚动后位置偏移 */
         left: 0;
         right: 0;
         width: 100%;
         max-width: 100vw;
         background-color: var(--color-surface); /* 使用surface色而非background，增强对比 */
+        border-top: 64px solid transparent; /* 添加顶部间距，为header预留空间 */
         border-bottom: 2px solid var(--color-border); /* 加粗边框 */
         box-shadow: 0 8px 24px var(--color-shadow-lg); /* 增强阴影 */
         z-index: var(--z-dropdown);
-        max-height: calc(100vh - 64px); /* 防止超出屏幕 */
+        max-height: 100vh; /* 占满整个视口高度 */
         overflow-y: auto; /* 内容多时可滚动 */
         backdrop-filter: blur(10px); /* 毛玻璃效果增强视觉层次 */
+        box-sizing: border-box; /* 确保border计入总高度 */
     }
 
     .xr-nav.active {
