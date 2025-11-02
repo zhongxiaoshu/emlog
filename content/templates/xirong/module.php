@@ -137,16 +137,27 @@ function xr_advantages_section()
 }
 
 /**
- * 渲染常见问题区块
+ * 渲染常见问题区块（从文章系统读取）
  */
 function xr_faq_section()
 {
-    $faqItems = _g('faq_items');
-    if (empty($faqItems)) {
-        $faqItems = "你们的服务范围是什么？|我们提供营销咨询、域名方案、数字云建和AI工程等全方位信息咨询服务。\n服务周期一般多长？|根据项目复杂度，一般从1周到3个月不等，我们会在项目开始前给出明确的时间规划。";
+    $faqCategoryId = _g('faq_category');
+    $faqCount = _g('faq_count') ?: 6;
+
+    // 如果没有设置FAQ分类，则不显示FAQ区块
+    if (empty($faqCategoryId)) {
+        return;
     }
 
-    $faqs = explode("\n", trim($faqItems));
+    // 从数据库获取FAQ分类下的文章
+    $Log_Model = new Log_Model();
+    $condition = " AND sortid=" . intval($faqCategoryId) . " ORDER BY date DESC";
+    $faqs = $Log_Model->getLogsForHome($condition, 1, intval($faqCount));
+
+    // 如果没有FAQ文章，则不显示
+    if (empty($faqs)) {
+        return;
+    }
 
     $output = '<section class="xr-faq" id="faq">';
     $output .= '<div class="xr-container">';
@@ -154,24 +165,16 @@ function xr_faq_section()
     $output .= '<div class="xr-faq-list">';
 
     foreach ($faqs as $index => $faq) {
-        $faq = trim($faq);
-        if (empty($faq)) {
-            continue;
-        }
+        $question = $faq['log_title'];
+        $answer = strip_tags($faq['log_description']); // 移除HTML标签
 
-        $parts = explode('|', $faq);
-        if (count($parts) === 2) {
-            $question = htmlspecialchars(trim($parts[0]), ENT_QUOTES, 'UTF-8');
-            $answer = htmlspecialchars(trim($parts[1]), ENT_QUOTES, 'UTF-8');
-
-            $output .= '<div class="xr-faq-item" data-aos="fade-up" data-aos-delay="' . ($index * 50) . '">';
-            $output .= '<div class="xr-faq-question">';
-            $output .= '<span>' . $question . '</span>';
-            $output .= '<svg class="xr-faq-icon"><use xlink:href="#icon-chevron-down"></use></svg>';
-            $output .= '</div>';
-            $output .= '<div class="xr-faq-answer"><p>' . $answer . '</p></div>';
-            $output .= '</div>';
-        }
+        $output .= '<div class="xr-faq-item" data-aos="fade-up" data-aos-delay="' . ($index * 50) . '">';
+        $output .= '<div class="xr-faq-question">';
+        $output .= '<span>' . $question . '</span>';
+        $output .= '<svg class="xr-faq-icon"><use xlink:href="#icon-chevron-down"></use></svg>';
+        $output .= '</div>';
+        $output .= '<div class="xr-faq-answer"><p>' . $answer . '</p></div>';
+        $output .= '</div>';
     }
 
     $output .= '</div></div></section>';

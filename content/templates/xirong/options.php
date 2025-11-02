@@ -120,13 +120,22 @@ $options = [
         'description' => '常见问题区块的标题'
     ],
 
-    'faq_items' => [
+    'faq_category' => [
+        'labels' => 'tpl-home',
+        'type' => 'sort',
+        'name' => '常见问题分类',
+        'description' => '选择一个分类，该分类下的文章将作为FAQ显示。文章标题=问题，文章内容=答案。留空则不显示FAQ区块。'
+    ],
+
+    'faq_count' => [
         'labels' => 'tpl-home',
         'type' => 'text',
-        'multi' => true,
-        'name' => '常见问题列表',
-        'default' => "你们的服务范围是什么？|我们提供营销咨询、域名方案、数字云建和AI工程等全方位信息咨询服务。\n服务周期一般多长？|根据项目复杂度，一般从1周到3个月不等，我们会在项目开始前给出明确的时间规划。\n如何开始合作？|请通过联系方式与我们沟通，我们会安排专业顾问了解您的需求并提供定制化方案。",
-        'description' => '每行一个问答，格式：问题|答案'
+        'name' => '常见问题显示数量',
+        'pattern' => 'num',
+        'min' => '1',
+        'max' => '50',
+        'default' => '6',
+        'description' => '首页FAQ区块显示的问题数量'
     ],
 
     'about_title' => [
