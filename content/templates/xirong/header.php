@@ -79,19 +79,7 @@ if (!function_exists('_g')) {
                 <?php xr_navigation(); ?>
 
                 <!-- 移动端菜单按钮 - 直接内联控制 -->
-                <button class="xr-mobile-menu-btn" id="mobile-menu-btn" aria-label="菜单"
-                    onclick="
-                        var nav = document.getElementById('main-nav');
-                        var overlay = document.getElementById('mobile-menu-overlay');
-                        if (nav) {
-                            var isActive = nav.classList.toggle('active');
-                            if (overlay) overlay.classList.toggle('active', isActive);
-                            document.body.style.overflow = isActive ? 'hidden' : '';
-                            alert('菜单' + (isActive ? '已打开' : '已关闭') + '！检查是否可见');
-                        } else {
-                            alert('错误：找不到菜单元素 #main-nav');
-                        }
-                    ">
+                <button class="xr-mobile-menu-btn" id="mobile-menu-btn" aria-label="菜单">
                     <svg class="xr-icon"><use xlink:href="#icon-menu"></use></svg>
                 </button>
             </div>

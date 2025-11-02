@@ -1523,18 +1523,17 @@ a, button, [role="button"], .xr-clickable,
         right: 0;
         width: 100%;
         max-width: 100vw;
-        background-color: var(--color-background);
-        border-bottom: 1px solid var(--color-border);
-        box-shadow: 0 4px 12px var(--color-shadow);
+        background-color: var(--color-surface); /* 使用surface色而非background，增强对比 */
+        border-bottom: 2px solid var(--color-border); /* 加粗边框 */
+        box-shadow: 0 8px 24px var(--color-shadow-lg); /* 增强阴影 */
         z-index: var(--z-dropdown);
         max-height: calc(100vh - 64px); /* 防止超出屏幕 */
         overflow-y: auto; /* 内容多时可滚动 */
+        backdrop-filter: blur(10px); /* 毛玻璃效果增强视觉层次 */
     }
 
     .xr-nav.active {
         display: block !important; /* 显示菜单 */
-        background-color: #ff0000 !important; /* 临时调试：红色背景，极易看见 */
-        border: 5px solid #00ff00 !important; /* 临时调试：绿色边框 */
     }
 
     .xr-nav-list {
