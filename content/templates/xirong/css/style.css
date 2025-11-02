@@ -1533,6 +1533,8 @@ a, button, [role="button"], .xr-clickable,
 
     .xr-nav.active {
         display: block !important; /* 显示菜单 */
+        background-color: #ff0000 !important; /* 临时调试：红色背景，极易看见 */
+        border: 5px solid #00ff00 !important; /* 临时调试：绿色边框 */
     }
 
     .xr-nav-list {
