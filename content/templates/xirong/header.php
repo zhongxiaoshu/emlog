@@ -1,6 +1,10 @@
 <?php
 /**
- * 息壤信息咨询服务主题 - 页头模板
+ * Template Name: 息壤企业主题
+ * Description: 专为高端企业打造的简约优雅主题，支持深色/浅色模式切换、响应式设计
+ * Version: 1.0.0
+ * Author: 息壤信息咨询服务
+ * Author URL: https://7xr.cn
  */
 
 defined('EMLOG_ROOT') || exit('access denied!');
@@ -61,16 +65,16 @@ if (!function_exists('_g')) {
                 <div class="xr-logo">
                     <a href="<?php echo BLOG_URL; ?>" class="xr-logo-link">
                         <?php
-                        // ===== LOGO切换方案 =====
-                        // 方案1：纯文字LOGO（默认）- 取消下面第一行注释即启用
-                        // 方案2：图片LOGO - 取消下面第二行注释即启用
-
-                        // 方案1：纯文字LOGO（当前激活）
-                        echo '<span class="xr-logo-text">7XR.CN</span>';
-
-                        // 方案2：图片LOGO（取消下面注释以使用图片，同时注释掉上面的方案1）
-                        // $logoImg = _g('logo_image') ?: TEMPLATE_URL . 'images/logo.png';
-                        // echo '<img src="' . htmlspecialchars($logoImg, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($blogname, ENT_QUOTES, 'UTF-8') . '" class="xr-logo-img">';
+                        // 根据后台设置显示LOGO
+                        $logoType = _g('logo_type') ?: 'text';
+                        if ($logoType === 'text') {
+                            // 文字LOGO
+                            echo '<span class="xr-logo-text">7XR.CN</span>';
+                        } else {
+                            // 图片LOGO
+                            $logoImg = _g('logo_image') ?: TEMPLATE_URL . 'images/logo.png';
+                            echo '<img src="' . htmlspecialchars($logoImg, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($blogname, ENT_QUOTES, 'UTF-8') . '" class="xr-logo-img">';
+                        }
                         ?>
                     </a>
                 </div>
