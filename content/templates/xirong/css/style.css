@@ -1505,33 +1505,26 @@ a, button, [role="button"], .xr-clickable,
         height: 64px;
     }
 
-    /* 移动端导航 - 使用伪元素占位，彻底隔离header和菜单内容 */
+    /* 移动端导航 - 最简单可靠的方案：直接从header下方开始 */
     .xr-nav {
         display: block; /* 始终存在于DOM中 */
         visibility: hidden; /* 默认不可见 */
         opacity: 0; /* 透明 */
         position: fixed;
-        top: 0; /* 从视口顶部开始 */
+        top: 64px; /* 直接从header下方开始，不占据header空间 */
         left: 0;
         right: 0;
+        bottom: 0; /* 延伸到视口底部 */
         width: 100%;
         max-width: 100vw;
-        background-color: transparent; /* 完全透明 */
-        z-index: 9999; /* 超高z-index，确保永远在最上层 */
-        max-height: 100vh; /* 占满整个视口 */
+        background-color: var(--color-surface); /* 直接设置背景色 */
+        backdrop-filter: blur(10px); /* 毛玻璃效果 */
+        border-bottom: 2px solid var(--color-border);
+        box-shadow: 0 8px 24px var(--color-shadow-lg);
+        z-index: 1000; /* 中等z-index，不与header冲突 */
         overflow-y: auto; /* 内容多时可滚动 */
-        box-sizing: border-box;
         pointer-events: none; /* 隐藏时不可交互 */
         transition: opacity 0.2s ease, visibility 0s 0.2s;
-    }
-
-    /* 使用伪元素创建64px的真实占位空间 */
-    .xr-nav::before {
-        content: '';
-        display: block;
-        height: 64px; /* header的高度 */
-        width: 100%;
-        pointer-events: none; /* 不拦截点击事件 */
     }
 
     .xr-nav.active {
@@ -1546,10 +1539,7 @@ a, button, [role="button"], .xr-clickable,
         padding: var(--spacing-md);
         gap: 0;
         width: 100%;
-        background-color: var(--color-surface); /* 菜单列表区域的背景色 */
-        backdrop-filter: blur(10px); /* 毛玻璃效果应用在列表区域 */
-        border-bottom: 2px solid var(--color-border); /* 加粗边框 */
-        box-shadow: 0 8px 24px var(--color-shadow-lg); /* 增强阴影 */
+        /* 背景色、边框等已在父元素.xr-nav上设置 */
     }
 
     .xr-nav-item {
@@ -1580,7 +1570,7 @@ a, button, [role="button"], .xr-clickable,
 
     .xr-mobile-menu-btn {
         display: flex;
-        z-index: 10000; /* 确保按钮在最顶层，高于菜单(9999) */
+        z-index: 1021; /* 略高于header(1020)和菜单(1000)，确保始终可点击 */
     }
 
     .xr-mobile-menu-overlay {
