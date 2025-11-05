@@ -1505,32 +1505,40 @@ a, button, [role="button"], .xr-clickable,
         height: 64px;
     }
 
-    /* 移动端导航 - 确保在所有情况下（包括header隐藏时）都完整显示 */
+    /* 移动端导航 - 使用伪元素占位，彻底隔离header和菜单内容 */
     .xr-nav {
         display: block; /* 始终存在于DOM中 */
         visibility: hidden; /* 默认不可见 */
         opacity: 0; /* 透明 */
         position: fixed;
-        top: 0; /* 从视口顶部开始，确保不被header遮挡 */
+        top: 0; /* 从视口顶部开始 */
         left: 0;
         right: 0;
         width: 100%;
         max-width: 100vw;
-        background-color: transparent; /* 顶部64px透明，显示header */
-        padding-top: 64px; /* 为header预留视觉空间 */
-        z-index: calc(var(--z-sticky) + 10); /* 必须高于header(1020)，避免被隐藏的header遮挡 */
+        background-color: transparent; /* 完全透明 */
+        z-index: 9999; /* 超高z-index，确保永远在最上层 */
         max-height: 100vh; /* 占满整个视口 */
         overflow-y: auto; /* 内容多时可滚动 */
-        box-sizing: border-box; /* 确保padding计入总高度 */
+        box-sizing: border-box;
         pointer-events: none; /* 隐藏时不可交互 */
-        transition: opacity 0.2s ease, visibility 0s 0.2s; /* 仅使用透明度过渡 */
+        transition: opacity 0.2s ease, visibility 0s 0.2s;
+    }
+
+    /* 使用伪元素创建64px的真实占位空间 */
+    .xr-nav::before {
+        content: '';
+        display: block;
+        height: 64px; /* header的高度 */
+        width: 100%;
+        pointer-events: none; /* 不拦截点击事件 */
     }
 
     .xr-nav.active {
         visibility: visible !important; /* 显示菜单 */
         opacity: 1 !important; /* 完全不透明 */
         pointer-events: auto; /* 可以交互 */
-        transition: opacity 0.2s ease; /* 移除visibility延迟 */
+        transition: opacity 0.2s ease;
     }
 
     .xr-nav-list {
@@ -1572,7 +1580,7 @@ a, button, [role="button"], .xr-clickable,
 
     .xr-mobile-menu-btn {
         display: flex;
-        z-index: calc(var(--z-sticky) + 20); /* 确保按钮在最顶层，高于菜单和header */
+        z-index: 10000; /* 确保按钮在最顶层，高于菜单(9999) */
     }
 
     .xr-mobile-menu-overlay {
