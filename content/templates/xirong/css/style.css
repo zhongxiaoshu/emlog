@@ -972,9 +972,9 @@ a, button, [role="button"], .xr-clickable,
 
 .xr-footer-right {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    align-items: flex-end;
+    flex-direction: row;  /* 改为水平布局 */
+    gap: var(--spacing-md);  /* 增加间距 */
+    align-items: center;  /* 垂直居中对齐 */
 }
 
 .xr-footer-legal {
@@ -1011,9 +1011,9 @@ a, button, [role="button"], .xr-clickable,
 }
 
 .xr-theme-btn {
-    min-width: 90px;
+    width: 36px;  /* 固定宽度，仅容纳图标 */
     height: 36px;
-    padding: 0 var(--spacing-sm);
+    padding: 0;  /* 移除内边距 */
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-full);
@@ -1022,7 +1022,7 @@ a, button, [role="button"], .xr-clickable,
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-xs);
+    gap: 0;  /* 移除间距 */
     transition: all var(--transition-base);
     font-size: var(--font-size-xs);
     font-weight: 500;
@@ -1053,18 +1053,7 @@ a, button, [role="button"], .xr-clickable,
 }
 
 .xr-theme-label {
-    font-size: var(--font-size-xs);
-    white-space: nowrap;
-}
-
-.xr-theme-label span {
-    display: none;
-}
-
-[data-theme="light"] .xr-theme-label [data-theme-label="light"],
-[data-theme="dark"] .xr-theme-label [data-theme-label="dark"],
-[data-theme="auto"] .xr-theme-label [data-theme-label="auto"] {
-    display: inline;
+    display: none;  /* 完全隐藏文字标签，仅显示图标 */
 }
 
 .xr-theme-menu {
@@ -1514,9 +1503,11 @@ a, button, [role="button"], .xr-clickable,
         height: 64px;
     }
 
-    /* 移动端导航 - 使用display控制，最可靠 */
+    /* 移动端导航 - 使用visibility和opacity控制，避免首次渲染问题 */
     .xr-nav {
-        display: none; /* 默认完全隐藏 */
+        display: block; /* 始终存在于DOM中 */
+        visibility: hidden; /* 默认不可见 */
+        opacity: 0; /* 透明 */
         position: fixed;
         top: 0; /* 从视口顶部开始，避免滚动后位置偏移 */
         left: 0;
@@ -1532,10 +1523,17 @@ a, button, [role="button"], .xr-clickable,
         overflow-y: auto; /* 内容多时可滚动 */
         backdrop-filter: blur(10px); /* 毛玻璃效果增强视觉层次 */
         box-sizing: border-box; /* 确保padding计入总高度 */
+        pointer-events: none; /* 隐藏时不可交互 */
+        transform: translateY(-10px); /* 轻微上移，配合过渡动画 */
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s 0.2s; /* 添加过渡效果 */
     }
 
     .xr-nav.active {
-        display: block !important; /* 显示菜单 */
+        visibility: visible !important; /* 显示菜单 */
+        opacity: 1 !important; /* 完全不透明 */
+        pointer-events: auto; /* 可以交互 */
+        transform: translateY(0); /* 恢复位置 */
+        transition: opacity 0.2s ease, transform 0.2s ease; /* 移除visibility延迟 */
     }
 
     .xr-nav-list {
@@ -1694,13 +1692,14 @@ a, button, [role="button"], .xr-clickable,
         text-align: center;
     }
 
+    .xr-footer-right {
+        flex-direction: row;  /* 移动端也保持水平布局 */
+        justify-content: center;  /* 居中显示 */
+    }
+
     .xr-footer-legal {
         justify-content: center;
         flex-wrap: wrap;
-    }
-
-    .xr-theme-switcher {
-        margin: 0 auto;
     }
 
     .xr-article-title {
