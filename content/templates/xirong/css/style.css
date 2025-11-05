@@ -1011,8 +1011,8 @@ a, button, [role="button"], .xr-clickable,
 }
 
 .xr-theme-btn {
-    width: 36px;  /* 固定宽度，仅容纳图标 */
-    height: 36px;
+    width: 40px;  /* 增大宽度，更清晰显示图标 */
+    height: 40px;
     padding: 0;  /* 移除内边距 */
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -1024,9 +1024,7 @@ a, button, [role="button"], .xr-clickable,
     justify-content: center;
     gap: 0;  /* 移除间距 */
     transition: all var(--transition-base);
-    font-size: var(--font-size-xs);
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    position: relative;  /* 为绝对定位的图标提供参考 */
 }
 
 .xr-theme-btn:hover {
@@ -1035,21 +1033,25 @@ a, button, [role="button"], .xr-clickable,
 }
 
 .xr-theme-btn .xr-icon {
-    width: 16px;
-    height: 16px;
+    width: 20px;  /* 增大图标尺寸 */
+    height: 20px;
     flex-shrink: 0;
+    position: absolute;  /* 绝对定位，确保图标重叠在同一位置 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .xr-theme-icon-sun,
 .xr-theme-icon-moon,
 .xr-theme-icon-auto {
-    display: none;
+    display: none !important;  /* 默认全部隐藏，使用 !important 确保优先级 */
 }
 
 [data-theme="light"] .xr-theme-icon-sun,
 [data-theme="dark"] .xr-theme-icon-moon,
 [data-theme="auto"] .xr-theme-icon-auto {
-    display: block;
+    display: block !important;  /* 只显示当前主题对应的图标 */
 }
 
 .xr-theme-label {
@@ -1509,31 +1511,29 @@ a, button, [role="button"], .xr-clickable,
         visibility: hidden; /* 默认不可见 */
         opacity: 0; /* 透明 */
         position: fixed;
-        top: 0; /* 从视口顶部开始，避免滚动后位置偏移 */
+        top: 64px; /* 从header下方开始，避免遮挡header */
         left: 0;
         right: 0;
         width: 100%;
         max-width: 100vw;
         background-color: var(--color-surface); /* 使用surface色而非background，增强对比 */
-        padding-top: 64px; /* 添加顶部内边距，为header预留空间 */
         border-bottom: 2px solid var(--color-border); /* 加粗边框 */
         box-shadow: 0 8px 24px var(--color-shadow-lg); /* 增强阴影 */
-        z-index: calc(var(--z-sticky) + 10); /* 确保菜单在header上方显示 */
-        max-height: 100vh; /* 占满整个视口高度 */
+        z-index: calc(var(--z-sticky) - 1); /* 确保菜单在header下方显示 */
+        max-height: calc(100vh - 64px); /* 减去header高度 */
         overflow-y: auto; /* 内容多时可滚动 */
         backdrop-filter: blur(10px); /* 毛玻璃效果增强视觉层次 */
         box-sizing: border-box; /* 确保padding计入总高度 */
         pointer-events: none; /* 隐藏时不可交互 */
-        transform: translateY(-10px); /* 轻微上移，配合过渡动画 */
-        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s 0.2s; /* 添加过渡效果 */
+        transform: translateY(0); /* 移除位移动画，避免定位问题 */
+        transition: opacity 0.2s ease, visibility 0s 0.2s; /* 仅使用透明度过渡 */
     }
 
     .xr-nav.active {
         visibility: visible !important; /* 显示菜单 */
         opacity: 1 !important; /* 完全不透明 */
         pointer-events: auto; /* 可以交互 */
-        transform: translateY(0); /* 恢复位置 */
-        transition: opacity 0.2s ease, transform 0.2s ease; /* 移除visibility延迟 */
+        transition: opacity 0.2s ease; /* 移除visibility延迟 */
     }
 
     .xr-nav-list {
