@@ -1505,27 +1505,24 @@ a, button, [role="button"], .xr-clickable,
         height: 64px;
     }
 
-    /* 移动端导航 - 使用visibility和opacity控制，避免首次渲染问题 */
+    /* 移动端导航 - 确保在所有情况下（包括header隐藏时）都完整显示 */
     .xr-nav {
         display: block; /* 始终存在于DOM中 */
         visibility: hidden; /* 默认不可见 */
         opacity: 0; /* 透明 */
         position: fixed;
-        top: 64px; /* 从header下方开始，避免遮挡header */
+        top: 0; /* 从视口顶部开始，确保不被header遮挡 */
         left: 0;
         right: 0;
         width: 100%;
         max-width: 100vw;
-        background-color: var(--color-surface); /* 使用surface色而非background，增强对比 */
-        border-bottom: 2px solid var(--color-border); /* 加粗边框 */
-        box-shadow: 0 8px 24px var(--color-shadow-lg); /* 增强阴影 */
-        z-index: calc(var(--z-sticky) - 1); /* 确保菜单在header下方显示 */
-        max-height: calc(100vh - 64px); /* 减去header高度 */
+        background-color: transparent; /* 顶部64px透明，显示header */
+        padding-top: 64px; /* 为header预留视觉空间 */
+        z-index: calc(var(--z-sticky) + 10); /* 必须高于header(1020)，避免被隐藏的header遮挡 */
+        max-height: 100vh; /* 占满整个视口 */
         overflow-y: auto; /* 内容多时可滚动 */
-        backdrop-filter: blur(10px); /* 毛玻璃效果增强视觉层次 */
         box-sizing: border-box; /* 确保padding计入总高度 */
         pointer-events: none; /* 隐藏时不可交互 */
-        transform: translateY(0); /* 移除位移动画，避免定位问题 */
         transition: opacity 0.2s ease, visibility 0s 0.2s; /* 仅使用透明度过渡 */
     }
 
@@ -1541,6 +1538,10 @@ a, button, [role="button"], .xr-clickable,
         padding: var(--spacing-md);
         gap: 0;
         width: 100%;
+        background-color: var(--color-surface); /* 菜单列表区域的背景色 */
+        backdrop-filter: blur(10px); /* 毛玻璃效果应用在列表区域 */
+        border-bottom: 2px solid var(--color-border); /* 加粗边框 */
+        box-shadow: 0 8px 24px var(--color-shadow-lg); /* 增强阴影 */
     }
 
     .xr-nav-item {
