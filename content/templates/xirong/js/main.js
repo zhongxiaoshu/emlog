@@ -277,14 +277,14 @@
             // 滚动事件
             window.addEventListener('scroll', throttle(() => this.handleScroll(), 100));
 
-            // 移动端菜单
-            if (this.mobileMenuBtn) {
-                addUniversalListener(this.mobileMenuBtn, () => this.toggleMobileMenu());
-            }
+            // 移动端菜单 - 使用内联onclick处理，避免双重绑定
+            // if (this.mobileMenuBtn) {
+            //     addUniversalListener(this.mobileMenuBtn, () => this.toggleMobileMenu());
+            // }
 
-            if (this.mobileMenuOverlay) {
-                addUniversalListener(this.mobileMenuOverlay, () => this.closeMobileMenu());
-            }
+            // if (this.mobileMenuOverlay) {
+            //     addUniversalListener(this.mobileMenuOverlay, () => this.closeMobileMenu());
+            // }
 
             // 点击导航链接后关闭移动菜单
             this.navLinks.forEach(link => {
