@@ -82,13 +82,16 @@ if (!function_exists('_g')) {
                 <!-- 导航菜单 -->
                 <?php xr_navigation(); ?>
 
-                <!-- 移动端菜单按钮 - 使用内联事件，保证即时响应 -->
+                <!-- 移动端菜单按钮 - 内联事件处理 -->
                 <button class="xr-mobile-menu-btn" id="mobile-menu-btn" aria-label="菜单"
                     onclick="(function(){
                         var nav = document.getElementById('main-nav');
                         var overlay = document.getElementById('mobile-menu-overlay');
                         if (nav) {
                             var isActive = nav.classList.toggle('active');
+                            if (isActive) {
+                                nav.scrollTop = 0;
+                            }
                             if (overlay) overlay.classList.toggle('active', isActive);
                             document.body.style.overflow = isActive ? 'hidden' : '';
                         }

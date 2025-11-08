@@ -1531,7 +1531,7 @@ a, button, [role="button"], .xr-clickable,
         display: block !important; /* 简单的block布局 */
         margin: 0;
         padding: 0;
-        padding-top: 80px; /* 为header留出安全空间 */
+        padding-top: 100px; /* 增大安全空间：header 64px + 36px 额外安全边距 */
         padding-bottom: 20px;
         background: var(--color-surface);
         width: 100%;
