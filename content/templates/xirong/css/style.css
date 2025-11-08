@@ -1505,56 +1505,45 @@ a, button, [role="button"], .xr-clickable,
         height: 64px;
     }
 
-    /* 移动端导航 - 全屏遮罩层，不包含内容 */
+    /* ========================================
+       移动端菜单 - 极简方案，绝对可靠
+       ======================================== */
     .xr-nav {
-        display: flex; /* 使用flex布局 */
-        flex-direction: column; /* 垂直方向 */
-        visibility: hidden; /* 默认不可见 */
-        opacity: 0; /* 透明 */
+        display: none; /* 默认完全隐藏 */
         position: fixed;
-        top: 0; /* 从视口顶部开始 */
+        top: 0;
         left: 0;
         right: 0;
-        bottom: 0; /* 延伸到视口底部 */
+        bottom: 0;
         width: 100%;
-        max-width: 100vw;
-        background-color: rgba(0, 0, 0, 0.5); /* 半透明背景遮罩 */
-        z-index: 2000; /* 高z-index，确保在所有元素之上 */
-        overflow-y: auto; /* 内容多时可滚动 */
-        overflow-x: hidden; /* 隐藏横向滚动 */
-        pointer-events: none; /* 隐藏时不可交互 */
-        transition: opacity 0.2s ease, visibility 0s 0.2s;
-        -webkit-overflow-scrolling: touch; /* 移动端滚动优化 */
-        padding: 0; /* 移除所有padding */
-        margin: 0; /* 移除所有margin */
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5); /* 半透明遮罩 */
+        z-index: 9999; /* 确保在最上层 */
+        overflow-y: auto; /* 允许滚动 */
+        -webkit-overflow-scrolling: touch;
     }
 
     .xr-nav.active {
-        visibility: visible !important; /* 显示菜单 */
-        opacity: 1 !important; /* 完全不透明 */
-        pointer-events: auto; /* 可以交互 */
-        transition: opacity 0.2s ease;
+        display: block !important; /* 显示菜单 */
     }
 
     .xr-nav-list {
-        display: flex !important; /* 明确设置为flex，覆盖任何继承 */
-        flex-direction: column;
-        padding: var(--spacing-md);
-        padding-top: 80px; /* 大的上边距，确保第一个菜单项不被header遮挡 */
-        gap: 0;
+        display: block !important; /* 简单的block布局 */
+        margin: 0;
+        padding: 0;
+        padding-top: 80px; /* 为header留出安全空间 */
+        padding-bottom: 20px;
+        background: var(--color-surface);
         width: 100%;
-        background-color: var(--color-surface); /* 菜单内容背景 */
-        backdrop-filter: blur(10px); /* 毛玻璃效果 */
-        border-bottom: 2px solid var(--color-border);
-        box-shadow: 0 8px 24px var(--color-shadow-lg);
-        min-height: 100vh; /* 确保至少占满视口高度 */
-        margin: 0; /* 移除margin */
-        list-style: none; /* 移除列表样式 */
-        flex-shrink: 0; /* 防止被压缩 */
+        min-height: 100vh; /* 至少全屏高度 */
+        list-style: none;
     }
 
     .xr-nav-item {
+        display: block;
         width: 100%;
+        margin: 0;
+        padding: 0;
         border-bottom: 1px solid var(--color-border);
     }
 
@@ -1565,23 +1554,28 @@ a, button, [role="button"], .xr-clickable,
     .xr-nav-link {
         display: block;
         width: 100%;
-        padding: var(--spacing-md);
-        border-radius: 0;
-        font-size: var(--font-size-base);
+        padding: 16px 20px; /* 固定padding值，简单可靠 */
+        margin: 0;
+        color: var(--color-text-primary);
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.2s;
     }
 
     .xr-nav-link:hover,
     .xr-nav-link:active {
-        background-color: var(--color-surface);
+        background-color: var(--color-surface-hover);
     }
 
     .xr-nav-link::after {
-        display: none;
+        display: none !important; /* 移除所有伪元素 */
     }
 
     .xr-mobile-menu-btn {
         display: flex;
-        z-index: 2001; /* 高于菜单(2000)，确保始终可点击 */
+        align-items: center;
+        justify-content: center;
+        z-index: 10000; /* 确保按钮始终在最上层 */
     }
 
     .xr-mobile-menu-overlay {
