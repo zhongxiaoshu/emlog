@@ -1529,14 +1529,15 @@ a, button, [role="button"], .xr-clickable,
 
     .xr-nav-list {
         display: block !important; /* 简单的block布局 */
-        margin: 0;
-        padding: 0;
-        padding-top: 100px; /* 增大安全空间：header 64px + 36px 额外安全边距 */
-        padding-bottom: 20px;
+        margin: 0 !important;
+        padding: 0 !important;
+        padding-top: 120px !important; /* 超大安全空间，确保第一项完全可见 */
+        padding-bottom: 20px !important;
         background: var(--color-surface);
         width: 100%;
-        min-height: 100vh; /* 至少全屏高度 */
+        min-height: calc(100vh + 60px); /* 确保足够高度 */
         list-style: none;
+        box-sizing: border-box;
     }
 
     .xr-nav-item {

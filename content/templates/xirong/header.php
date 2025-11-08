@@ -87,10 +87,12 @@ if (!function_exists('_g')) {
                     onclick="(function(){
                         var nav = document.getElementById('main-nav');
                         var overlay = document.getElementById('mobile-menu-overlay');
+                        var header = document.getElementById('main-header');
                         if (nav) {
                             var isActive = nav.classList.toggle('active');
                             if (isActive) {
                                 nav.scrollTop = 0;
+                                if (header) header.classList.remove('hidden');
                             }
                             if (overlay) overlay.classList.toggle('active', isActive);
                             document.body.style.overflow = isActive ? 'hidden' : '';
