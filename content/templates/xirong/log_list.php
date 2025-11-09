@@ -47,14 +47,14 @@ if (!blog_tool_ishome()) {
 <!-- 服务优势区块 -->
 <?php xr_advantages_section(); ?>
 
-<!-- 常见问题区块 -->
-<?php xr_faq_section(); ?>
-
 <!-- 关于我们区块 -->
 <?php xr_about_section(); ?>
 
 <!-- 加入我们区块 -->
 <?php xr_join_section(); ?>
+
+<!-- 常见问题区块 -->
+<?php xr_faq_section(); ?>
 
 <?php
 }

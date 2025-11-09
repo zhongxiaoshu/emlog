@@ -104,9 +104,12 @@ require_once View::getView('header');
 /* 新闻Hero区域 */
 .xr-news-hero {
     position: relative;
-    padding: 100px 0 60px;
+    padding: 120px 0 120px; /* 上下对称padding，视觉居中 */
     overflow: hidden;
     background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    min-height: 280px; /* 确保最小高度 */
 }
 
 .xr-news-hero-bg {

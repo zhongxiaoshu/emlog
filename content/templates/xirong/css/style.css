@@ -331,6 +331,12 @@ a, button, [role="button"], .xr-clickable,
     height: 40px;
     width: auto;
     display: block;
+    transition: filter var(--transition-base);
+}
+
+/* 深色模式下反转LOGO颜色，使黑色LOGO在深色背景下可见 */
+[data-theme="dark"] .xr-logo-img {
+    filter: invert(1) brightness(1.2);
 }
 
 /* 导航菜单 */
