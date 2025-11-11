@@ -4,10 +4,15 @@
  */
 
 defined('EMLOG_ROOT') || exit('access denied!');
-
-// 临时调试：不include header，因为controller已经include了
-// include View::getView('header');
 ?>
+
+<!-- DEBUG START: echo_log.php is executing -->
+<div style="background: yellow; padding: 20px; margin: 20px; border: 5px solid red;">
+    <h1 style="color: red; font-size: 40px;">调试信息 - echo_log.php 正在执行</h1>
+    <p>log_title: <?php echo isset($log_title) ? htmlspecialchars($log_title, ENT_QUOTES, 'UTF-8') : 'NOT SET'; ?></p>
+    <p>log_content exists: <?php echo isset($log_content) ? 'YES (' . mb_strlen($log_content) . ' chars)' : 'NO'; ?></p>
+</div>
+<!-- DEBUG END -->
 
 <main class="xr-article">
     <div class="xr-container xr-container-narrow">
