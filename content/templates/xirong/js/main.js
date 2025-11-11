@@ -570,6 +570,117 @@
     }
 
     // ============================================
+    // 评论系统
+    // ============================================
+
+    const Comments = {
+        init() {
+            this.commentForm = getElement('#commentform');
+            this.commentTextarea = getElement('#comment');
+            this.commentPidInput = getElement('#comment-pid');
+            this.replyButtons = getElements('.xr-reply-btn');
+            this.modal = getElement('#myModal');
+            this.modalBackdrop = getElement('.xr-modal-backdrop');
+
+            if (!this.commentForm) return;
+
+            this.bindEvents();
+        },
+
+        bindEvents() {
+            // 回复按钮点击事件
+            this.replyButtons.forEach(btn => {
+                addUniversalListener(btn, (e) => {
+                    e.preventDefault();
+                    this.handleReply(btn);
+                });
+            });
+
+            // 模态框相关事件
+            if (this.modal) {
+                const closeBtn = this.modal.querySelector('#close-modal');
+                const submitBtn = this.modal.querySelector('#comment_submit2');
+
+                if (closeBtn) {
+                    addUniversalListener(closeBtn, () => this.closeModal());
+                }
+
+                if (this.modalBackdrop) {
+                    addUniversalListener(this.modalBackdrop, () => this.closeModal());
+                }
+
+                // 显示模态框的按钮
+                const showModalBtn = getElement('[data-toggle="modal"]');
+                if (showModalBtn) {
+                    addUniversalListener(showModalBtn, (e) => {
+                        e.preventDefault();
+                        this.showModal();
+                    });
+                }
+            }
+        },
+
+        handleReply(btn) {
+            // 获取评论ID
+            const comment = btn.closest('.xr-comment');
+            if (!comment) return;
+
+            const commentId = comment.id.replace('comment-', '');
+
+            // 设置父评论ID
+            if (this.commentPidInput) {
+                this.commentPidInput.value = commentId;
+            }
+
+            // 滚动到评论表单
+            if (this.commentTextarea) {
+                this.commentTextarea.focus();
+                const formWrapper = this.commentForm.closest('.xr-comment-form-wrapper');
+                if (formWrapper) {
+                    const headerHeight = getElement('#main-header')?.offsetHeight || 72;
+                    const targetPosition = formWrapper.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            // 添加视觉反馈
+            const poster = comment.querySelector('.xr-comment-meta strong');
+            if (poster && this.commentTextarea) {
+                const posterName = poster.textContent.trim();
+                const placeholder = `回复 ${posterName}...`;
+                this.commentTextarea.setAttribute('placeholder', placeholder);
+            }
+        },
+
+        showModal() {
+            if (this.modal) {
+                this.modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        },
+
+        closeModal() {
+            if (this.modal) {
+                this.modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        },
+
+        reset() {
+            if (this.commentPidInput) {
+                this.commentPidInput.value = '0';
+            }
+            if (this.commentTextarea) {
+                this.commentTextarea.setAttribute('placeholder', '撰写评论...');
+            }
+        }
+    };
+
+    // ============================================
     // 主初始化函数
     // ============================================
 
@@ -601,6 +712,9 @@
         // 图片懒加载
         initLazyLoading();
 
+        // 评论系统
+        Comments.init();
+
         // 性能监控（开发环境）
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             console.log('%c息壤主题已加载', 'color: #0066FF; font-size: 16px; font-weight: bold;');
@@ -629,6 +743,7 @@
         Navigation,
         BackToTop,
         Modal,
+        Comments,
         version: '1.0.0'
     };
 

@@ -400,3 +400,155 @@ function editflg($logid, $author)
         echo '<a href="' . BLOG_URL . 'admin/article.php?action=edit&gid=' . $logid . '" target="_blank" class="xr-edit-link" style="margin-left: 10px; color: var(--color-primary); text-decoration: none;">[编辑]</a>';
     }
 }
+
+/**
+ * 首页文章列表和文章详情页：标签
+ */
+function blog_tag($blogid)
+{
+    $tag_model = new Tag_Model();
+    $tag_ids = $tag_model->getTagIdsFromBlogId($blogid);
+    $tag_names = $tag_model->getNamesFromIds($tag_ids);
+    if (!empty($tag_names)) {
+        $tag = '';
+        foreach ($tag_names as $value) {
+            $tag .= "    <a href=\"" . Url::tag(rawurlencode($value)) . "\" class='tags' title='标签' >" . htmlspecialchars($value) . '</a>';
+        }
+        echo $tag;
+    }
+}
+
+/**
+ * 文章详情页：评论列表
+ */
+function blog_comments($comments, $comnum)
+{
+    extract($comments);
+    if ($commentStacks): ?>
+        <div class="xr-comment-header"><strong>收到<?= $comnum ?>条评论</strong></div>
+    <?php endif ?>
+    <?php
+    foreach ($commentStacks as $cid):
+        $comment = $comments[$cid];
+    ?>
+        <div class="xr-comment" id="comment-<?= $comment['cid'] ?>">
+            <?php
+            $avatar = getEmUserAvatar($comment['uid'], $comment['mail']);
+            ?>
+            <div class="xr-comment-avatar"><img src="<?= $avatar ?>" alt="avatar" /></div>
+            <div class="xr-comment-body">
+                <div class="xr-comment-meta">
+                    <strong><?= htmlspecialchars($comment['poster']) ?></strong>
+                    <span class="xr-comment-time"><?= $comment['date'] ?></span>
+                </div>
+                <div class="xr-comment-content"><?= $comment['content'] ?></div>
+                <div class="xr-comment-reply">
+                    <span class="xr-reply-btn">回复</span>
+                </div>
+            </div>
+            <?php blog_comments_children($comments, $comment['children']) ?>
+        </div>
+    <?php endforeach ?>
+    <div class="xr-pagination">
+        <?= $commentPageUrl ?>
+    </div>
+<?php }
+
+/**
+ * 文章详情页：子评论
+ */
+function blog_comments_children($comments, $children)
+{
+    foreach ($children as $child):
+        $comment = $comments[$child];
+?>
+        <div class="xr-comment xr-comment-child" id="comment-<?= $comment['cid'] ?>">
+            <?php
+            $avatar = getEmUserAvatar($comment['uid'], $comment['mail']);
+            ?>
+            <div class="xr-comment-avatar"><img src="<?= $avatar ?>" alt="commentator" /></div>
+            <div class="xr-comment-body">
+                <div class="xr-comment-meta">
+                    <strong><?= htmlspecialchars($comment['poster']) ?></strong>
+                    <span class="xr-comment-time"><?= $comment['date'] ?></span>
+                </div>
+                <div class="xr-comment-content"><?= $comment['content'] ?></div>
+                <?php if ($comment['level'] < 4): ?>
+                    <div class="xr-comment-reply">
+                        <span class="xr-reply-btn">回复</span>
+                    </div>
+                <?php endif ?>
+            </div>
+            <?php blog_comments_children($comments, $comment['children']) ?>
+        </div>
+    <?php endforeach ?>
+<?php }
+
+/**
+ * 文章详情页：评论表单
+ */
+function blog_comments_post($logid, $ckname, $ckmail, $ckurl, $verifyCode, $allow_remark)
+{
+    $isLoginComment = Option::get('login_comment');
+    if ($allow_remark == 'y'): ?>
+        <div class="xr-comment-form-wrapper">
+            <form class="xr-comment-form" method="post" name="commentform" action="<?= BLOG_URL ?>index.php?action=addcom" id="commentform">
+                <input type="hidden" name="gid" value="<?= $logid ?>" />
+                <textarea class="xr-comment-textarea" name="comment" id="comment" rows="6" tabindex="4" placeholder="撰写评论..." required></textarea>
+                <?php if (User::isVisitor() && $isLoginComment === 'n'): ?>
+                    <div class="xr-comment-info">
+                        <input class="xr-comment-input" id="info_n" autocomplete="off" type="text" name="comname" maxlength="49"
+                            value="<?= $ckname ?>" size="22"
+                            tabindex="1" placeholder="昵称 *" required />
+                        <input class="xr-comment-input" id="info_m" autocomplete="off" type="email" name="commail" maxlength="128"
+                            value="<?= $ckmail ?>" size="22"
+                            tabindex="2" placeholder="邮箱" />
+                    </div>
+                <?php endif ?>
+                <div class="xr-comment-submit">
+                    <?php if (User::isVisitor() && $isLoginComment === 'y'): ?>
+                        <p>请先 <a href="./admin/index.php">登录</a> 再评论</p>
+                    <?php else: ?>
+                        <button class="xr-btn xr-btn-primary" <?php if ($verifyCode != "") { ?> type="button" data-toggle="modal" data-target="#myModal" <?php } else { ?> type="submit" <?php } ?>
+                            id="comment_submit" tabindex="6">发布评论</button>
+                    <?php endif; ?>
+                </div>
+                <?php if ($verifyCode != ""): ?>
+                    <div class="xr-modal" id="myModal" tabindex="-1" role="dialog">
+                        <div class="xr-modal-dialog">
+                            <div class="xr-modal-content">
+                                <input type="hidden" id="blog_url" value="<?= BLOG_URL ?>" />
+                                <div class="xr-modal-header">输入验证码</div>
+                                <div class="xr-modal-body">
+                                    <?= $verifyCode ?>
+                                </div>
+                                <div class="xr-modal-footer">
+                                    <button type="button" class="xr-btn" id="close-modal" data-dismiss="modal">关闭</button>
+                                    <button type="submit" class="xr-btn xr-btn-primary" id="comment_submit2">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="xr-modal-backdrop"></div>
+                    </div>
+                <?php endif ?>
+                <input type="hidden" name="pid" id="comment-pid" value="0" tabindex="1" />
+            </form>
+        </div>
+    <?php endif ?>
+<?php }
+
+/**
+ * 获取用户头像
+ */
+function getEmUserAvatar($uid, $mail)
+{
+    $avatar = '';
+    if ($uid) {
+        $userModel = new User_Model();
+        $user = $userModel->getOneUser($uid);
+        $avatar = User::getAvatar($user['photo']);
+    } elseif ($mail) {
+        $avatar = getGravatar($mail);
+    }
+    return $avatar ?: BLOG_URL . "admin/views/images/avatar.svg";
+}
