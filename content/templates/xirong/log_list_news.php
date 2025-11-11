@@ -3,8 +3,8 @@
 
 defined('EMLOG_ROOT') || exit('access denied!');
 
-// 加载页头
-require_once View::getView('header');
+// 不需要手动include header，sort_controller会自动include
+// require_once View::getView('header');
 ?>
 
 <!-- 新闻中心Hero区域 -->
