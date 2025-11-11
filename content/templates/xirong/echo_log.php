@@ -4,7 +4,9 @@
  */
 
 defined('EMLOG_ROOT') || exit('access denied!');
-include View::getView('header');
+
+// 临时调试：不include header，因为controller已经include了
+// include View::getView('header');
 ?>
 
 <main class="xr-article">
