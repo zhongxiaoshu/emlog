@@ -5,11 +5,12 @@
 
 defined('EMLOG_ROOT') || exit('access denied!');
 
-if (!blog_tool_ishome()) {
-    include View::getView('header');
-} else {
-    // 首页显示完整的企业展示页面
-    include View::getView('header');
+// 不需要手动include header，log_controller会自动include
+// if (!blog_tool_ishome()) {
+//     include View::getView('header');
+// } else {
+//     include View::getView('header');
+// }
 ?>
 
 <!-- 首屏Hero区域 -->
@@ -57,7 +58,7 @@ if (!blog_tool_ishome()) {
 <?php xr_faq_section(); ?>
 
 <?php
-}
+// } // 原if...else的结束括号，现已不需要
 
 // 如果有文章列表，显示文章
 if (!empty($logs) && !blog_tool_ishome()): ?>
