@@ -8,6 +8,13 @@
  */
 
 defined('EMLOG_ROOT') || exit('access denied!');
+
+// 防止header被重复include - 如果已经输出过header就直接返回
+if (defined('XR_HEADER_LOADED')) {
+    return;
+}
+define('XR_HEADER_LOADED', true);
+
 require_once View::getView('module');
 
 // 检查tpl_options插件 - 提供兼容函数
