@@ -389,3 +389,14 @@ function blog_tag_exists($blogid)
     $tags = $tag_model->getTag($blogid);
     return !empty($tags);
 }
+
+/**
+ * 文章详情页：编辑链接
+ * 当管理员或作者登录时显示"编辑"链接
+ */
+function editflg($logid, $author)
+{
+    if (User::haveEditPermission() || $author == UID) {
+        echo '<a href="' . BLOG_URL . 'admin/article.php?action=edit&gid=' . $logid . '" target="_blank" class="xr-edit-link" style="margin-left: 10px; color: var(--color-primary); text-decoration: none;">[编辑]</a>';
+    }
+}
