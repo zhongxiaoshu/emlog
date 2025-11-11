@@ -4,7 +4,6 @@
  */
 
 defined('EMLOG_ROOT') || exit('access denied!');
-include View::getView('header');
 ?>
 
 <main class="xr-article">

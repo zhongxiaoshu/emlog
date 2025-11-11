@@ -2,9 +2,6 @@
 /*@name 新闻中心*/
 
 defined('EMLOG_ROOT') || exit('access denied!');
-
-// 加载页头
-require_once View::getView('header');
 ?>
 
 <!-- 新闻中心Hero区域 -->
@@ -104,12 +101,12 @@ require_once View::getView('header');
 /* 新闻Hero区域 */
 .xr-news-hero {
     position: relative;
-    padding: 120px 0 120px; /* 上下对称padding，视觉居中 */
+    padding: 160px 0 100px; /* 上部增加padding以补偿固定导航栏高度(64px) */
     overflow: hidden;
     background: var(--color-surface);
     display: flex;
     align-items: center;
-    min-height: 280px; /* 确保最小高度 */
+    min-height: 320px; /* 确保最小高度 */
 }
 
 .xr-news-hero-bg {
@@ -314,7 +311,7 @@ require_once View::getView('header');
 /* 移动端适配 */
 @media (max-width: 768px) {
     .xr-news-hero {
-        padding: 80px 0 40px;
+        padding: 120px 0 60px; /* 移动端也需要补偿导航栏高度 */
     }
 
     .xr-news-grid {
@@ -353,4 +350,4 @@ require_once View::getView('header');
     </symbol>
 </svg>
 
-<?php require_once View::getView('footer'); ?>
+<?php include View::getView('footer'); ?>
