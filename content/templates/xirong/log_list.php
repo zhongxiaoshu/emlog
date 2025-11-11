@@ -6,10 +6,10 @@
 defined('EMLOG_ROOT') || exit('access denied!');
 
 if (!blog_tool_ishome()) {
-    // 非首页不需要手动include header，控制器会自动包含
+    include View::getView('header');
 } else {
     // 首页显示完整的企业展示页面
-}
+    include View::getView('header');
 ?>
 
 <!-- 首屏Hero区域 -->
